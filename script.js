@@ -1,13 +1,28 @@
-// Assignment code here
+//Globals
+var passwordPieces = [
+    "1234567890",
+    "abcdefghijklmnopqrstuvwxyz",
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    "!@#$%^&*()"
+];
+// function to generate a random numeric value
+function randomNumber(min, max) {
+    var value = Math.floor(Math.random() * (max - min) + min);
+  
+    return value;
+  };
+//Generate the password function
 function generatePassword(){
     var password = {
         length : 0,
         lower : false,
         upper : false,
         num : false,
-        special : false
+        special : false,
+        finalPassword : 0
 
     };
+
     /******FUNCTIONS*********/
 
     //Select password criteria (must choose one)
@@ -23,7 +38,101 @@ function generatePassword(){
         notChosenCriteria = false;
         return length;
     }
+    // Function that uses chooseCriteria to create password
+    function createPassword(){
+        console.log("Creating random password");
+            //Skip function
+            function charSkip(skip){
+                console.log("Skipping this num: " + skip);
+                var j = 0;
+              
+                var toJoin = new Array(password.length).fill(null);
+                console.log("Our toJoin is: " + toJoin);
+                console.log(passwordPieces[j]);
+                for(var i = 0; i <= password.length ; i++ ){
+                    console.log("Entering loop password create, iteration " + i);  
+                    if( j == skip){
+                        j = skip+1;
+                        if( j > 3){
+                            j = 0;
+                        }
+                        console.log("j is our skip value, jump over!: " + j);
+                    }           
+                        console.log("This is now our j value: " + j);
+                         
+                        var toSplit = passwordPieces[j].split("");
+                        var randoNo = randomNumber(0, toSplit.length-1)
+                        //console.log("our random index: " + randoNo);
+                        console.log("What we have to split: " + toSplit);
+                        console.log("possible random value: " + toSplit[randoNo]);
+                       // console.log("ToSplit length: " + toSplit.length)
+                        
+                        toJoin[i] = toSplit[randoNo];
+                        console.log("Put " + toJoin[i] + " into spot " + i);
+                        console.log("Our current password: " + toJoin);
+                        password.finalPassword = toJoin.join("");
+                        
+                        console.log("toJoin string is: " + toJoin);
+                        //Resets J to go through typesd of chars
+                        if( j == 3){
+                            j = 0;
+                        }
+                         console.log("j is: " + j);         
+                       
+                       j++;
+                    }       
+            }
+            //USER WANTS ALL CHARS
+            if(password.lower === true && password.upper === true && password.num === true && password.special === true){
+                console.log("Entered all true if statement");
+                                
 
+                    var j = 0;
+                    var toJoin = new Array(password.length).fill(null);
+                    console.log("Our toJoin is: " + toJoin);
+                    console.log(passwordPieces[j]);
+                    for(var i = 0; i <= password.length ; i++ ){
+                        console.log("Entering loop password create, iteration " + i);                
+                            var toSplit = passwordPieces[j].split("");
+                            var randoNo = randomNumber(0, toSplit.length-1)
+                            console.log("our random index: " + randoNo);
+                            console.log("What we have to split: " + toSplit);
+                            console.log("possible random value: " + toSplit[randoNo]);
+                            console.log("ToSplit length: " + toSplit.length)
+                            
+                            toJoin[i] = toSplit[randoNo];
+                            console.log("Put " + toJoin[i] + " into spot " + i);
+                            console.log("Our current password: " + toJoin);
+                            password.finalPassword = toJoin.join("");
+                            
+                            console.log("toJoin string is: " + toJoin);
+                            //Resets J to go through typesd of chars
+                            if( j == 3){
+                                j = -1;
+                            }            
+                           j++;
+                        }       
+             }
+             else if(password.lower === false && password.upper === true && password.num === true && password.special === true){
+                //skipping lowers
+                charSkip(1);
+             }
+             else if(password.lower === true && password.upper === false && password.num === true && password.special === true){
+                 //skipping uppers
+                 charSkip(2);
+             }
+             else if (password.lower === true && password.upper === true && password.num === false && password.special === true){
+                //skipping nums
+                charSkip(0);
+             }
+             else if(password.lower === true && password.upper === true && password.num === true && password.special === false){
+                 //skipping specials
+                 charSkip(3);
+             }
+            return toJoin
+        }
+     
+    
 
     function chooseCriteria(){
 
@@ -117,7 +226,7 @@ function generatePassword(){
         }
   
     }
-        
+     createPassword();   
     }
 
     /******End Functions*********/
@@ -125,8 +234,8 @@ function generatePassword(){
     // Alert user we are making a password
     window.alert("Let's generate you a password!");
     chooseCriteria();
-
-    return password;
+    console.log(password.finalPassword);
+    return password.finalPassword;
   }
   
   // Get references to the #generate element
